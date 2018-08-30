@@ -453,5 +453,22 @@ Do not forget to add the increment loop variable at the end of for each previous
 ![alt text](img/42.logic-apps.png)
 
 
+Now the function start-vm is ready to run!
+Just check the proper tag on-hour in order to trigger it properly.
+
+The stop-vm Logic Apps is exactly the same of start-vm.
+You need to change only the condition putting off-hour instaed of on-hour and change the action of Start-StopVMs into Stop-AzureRmVM.
+
+Try yourselves and in case of problem reach me via standard channel.
+
+Enjoy the cloud and save your money!
+
+
+#### About author
+
+My Name is Emiliano Angieri and I'm a Cloud engineer expert with passion for all cloud applications and best practicies.
+
+Do you need support, help or clarifications?
+Follow me on linkedin https://www.linkedin.com/in/emiliano-angieri-49908478/ or ask me a question to e.angieri@libero.it.
 
 
