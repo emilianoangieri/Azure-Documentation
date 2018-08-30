@@ -382,6 +382,8 @@ As schema property use the following:
 }
 ```
 
+![alt text](img/32.logic-apps.png)
+
 Now we can check if the current item of the list (that contains the VMs) is part of on-group-order (compared with loop iteraction variable) and then I will check if the tag of the current VM "on-group-order" is like the current timestamp hour.
 e.g.
 In the first iteration the loop variable is equal 1.
@@ -397,4 +399,6 @@ The second condition is:
 
 on-group-order is equal to loop variable.
 
-![alt text](img/32.logic-apps.png)
+![alt text](img/33.logic-apps.png)
+
+
