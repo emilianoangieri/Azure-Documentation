@@ -401,4 +401,15 @@ on-group-order is equal to loop variable.
 
 ![alt text](img/33.logic-apps.png)
 
+Now if the condition is true the VM need to be started.
+Click on "+ Next Step" and add the Azure Function Start-StopVMs.
 
+As body in input to this function I need to pass the ResourceGroup of the VM (retrievable from the Parse Json previous configured), with VM hostname and action (in this case Start-AzureRmVM).
+
+![alt text](img/33.logic-apps.png)
+
+Now add a delay of 1 minute before check the VM status.
+
+![alt text](img/34.logic-apps.png)
+
+Then call the Azure function check 
