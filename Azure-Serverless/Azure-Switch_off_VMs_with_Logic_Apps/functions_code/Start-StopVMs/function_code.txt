@@ -1,0 +1,49 @@
+#recupera credenziali e loggati
+#$secpasswd = ConvertTo-SecureString $env:SP_PASSWORD -AsPlainText -Force;
+#$mycreds = New-Object System.Management.Automation.PSCredential ($env:SP_USERNAME, $secpasswd)
+#Login-AzureRmAccount -Credential $mycreds
+
+#Login with ServicePrincipal
+$applicationId = $env:APPLICATION_ID;
+$securePassword = $env:SERVICE_PRINCIPAL_PASS | ConvertTo-SecureString -AsPlainText -Force
+$credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $applicationId, $securePassword
+Login-AzureRmAccount -ServicePrincipal -Credential $credential -TenantId $env:TENANTID
+
+# POST method: $req
+$requestBody = Get-Content $req -Raw | ConvertFrom-Json
+$action = $requestBody.action
+$ResourceGroup = $requestBody.ResourceGroup
+$VMname = $requestBody.VMname
+
+Write-Output ("Invoked "+$action+" "+$ResourceGroup+" "+$VMname)
+
+if (([string]::IsNullOrEmpty($action))){
+    Throw "Error Action not passed."
+    exit
+}
+
+if (([string]::IsNullOrEmpty($ResourceGroup))){
+    Throw "Error ResourceGroup not passed."
+    exit
+}
+
+if (([string]::IsNullOrEmpty($VMname))){
+    Throw "Error ResourceGroup not passed."
+    exit
+}
+
+if ($action -eq "Start-AzureRmVM"){
+    Start-AzureRmVM -ResourceGroupName $ResourceGroup -Name $VMname
+}
+else{
+    if ($action -eq "Stop-AzureRmVM"){
+        Stop-AzureRmVM -Force -ResourceGroupName $ResourceGroup -Name $VMname
+    }
+    else {
+        Throw "Error Action not recognized."
+    }
+}
+
+
+
+#Out-File -Encoding Ascii -FilePath $res -inputObject "Hello $VMname $ResourceGroup $action"

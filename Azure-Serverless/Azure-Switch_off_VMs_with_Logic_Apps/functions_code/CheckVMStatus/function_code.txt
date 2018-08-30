@@ -1,0 +1,43 @@
+#Login with ServicePrincipal
+$applicationId = $env:APPLICATION_ID;
+$securePassword = $env:SERVICE_PRINCIPAL_PASS | ConvertTo-SecureString -AsPlainText -Force
+$credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $applicationId, $securePassword
+Login-AzureRmAccount -ServicePrincipal -Credential $credential -TenantId $env:TENANTID
+
+#timeout in minuti di attesa finchè la macchina non è running
+$timeout_vmRunning = 3
+
+# POST method: $req
+$requestBody = Get-Content $req -Raw | ConvertFrom-Json
+$ResourceGroup = $requestBody.ResourceGroup
+$VMname = $requestBody.VMname
+
+
+if (([string]::IsNullOrEmpty($ResourceGroup))){
+    Throw "Error ResourceGroup not passed."
+    exit
+}
+
+if (([string]::IsNullOrEmpty($VMname))){
+    Throw "Error ResourceGroup not passed."
+    exit
+}
+
+#Get-AzureRMVM -Status | ?{($_.Tags['on-off'] -like "yes") }
+$counter_minute = 0
+DO{
+    $counter_minute ++
+    Start-Sleep -s 60
+    $vm = Get-AzureRmVM -Status -ResourceGroupName $ResourceGroup -Name $VMname 
+
+} WHILE ($vm.Statuses.DisplayStatus[1] -ne "VM running" -and $counter_minute -lt $timeout_vmRunning)
+
+
+$jsonTemplate = [pscustomobject]@{
+        Name = $vm.Name
+        Status = $vm.Statuses.DisplayStatus[1]
+}
+
+$vm_json=ConvertTo-Json($jsonTemplate)
+
+Out-File -Encoding Ascii -FilePath $res -inputObject  $vm_json

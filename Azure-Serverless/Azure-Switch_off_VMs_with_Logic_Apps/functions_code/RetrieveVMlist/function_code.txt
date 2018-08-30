@@ -1,0 +1,40 @@
+# POST method: $req
+$requestBody = Get-Content $req -Raw | ConvertFrom-Json
+$name = $requestBody.name
+
+#$secpasswd = ConvertTo-SecureString $env:SP_PASSWORD -AsPlainText -Force;
+#$mycreds = New-Object System.Management.Automation.PSCredential ($env:SP_USERNAME, $secpasswd)
+#Login-AzureRmAccount -Credential $mycreds
+
+#Login with ServicePrincipal
+$applicationId = $env:APPLICATION_ID;
+$securePassword = $env:SERVICE_PRINCIPAL_PASS | ConvertTo-SecureString -AsPlainText -Force
+$credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $applicationId, $securePassword
+Login-AzureRmAccount -ServicePrincipal -Credential $credential -TenantId $env:TENANTID
+
+
+
+$vms = Get-AzureRMVM | ?{($_.Tags['on-off'] -like "yes")} 
+
+$myArray = @()
+foreach ($vm in $vms){
+    #retrieve network interface to get private ip
+    $NifName = ($vm.NetworkProfile[0].NetworkInterfaces.Id).Split('/') | Select-Object -Last 1
+    $MyInterface = (Get-AzureRmNetworkInterface -Name $NifName -ResourceGroupName $vm.ResourceGroupName).IpConfigurations
+
+    $jsonTemplate = [pscustomobject]@{
+        Name = $vm.Name
+        VmSize = $vm.HardwareProfile.VmSize
+        ResourceGroup = $vm.ResourceGroupName
+        Tags = $vm.Tags
+        PrivateIp = $MyInterface.privateipaddress
+    }
+    
+    $myArray += $jsonTemplate
+
+}
+
+$vms_json=ConvertTo-Json($myArray)
+
+
+Out-File -Encoding Ascii -FilePath $res -inputObject  $vms_json
