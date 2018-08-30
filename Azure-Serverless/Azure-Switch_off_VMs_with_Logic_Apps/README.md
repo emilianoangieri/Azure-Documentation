@@ -336,3 +336,65 @@ In this case I'm going to reuse the variable loop.
 ![alt text](img/29.logic-apps.png)
 
 ![alt text](img/30.logic-apps.png)
+
+Now add the action that will process all the VMs retrieved and switch on the VMs based on the tags.
+Create a For each action for each element previously retrieved from RetrieveVMlist action.
+
+![alt text](img/31.logic-apps.png)
+
+Now we can add a "Parse Json" to bettere manipulate the output of prevoius status.
+As schema property use the following:
+
+```json
+{
+    "properties": {
+        "Name": {
+            "type": "string"
+        },
+        "PrivateIp": {
+            "type": "string"
+        },
+        "ResourceGroup": {
+            "type": "string"
+        },
+        "Tags": {
+            "properties": {
+                "on-group-internal-order": {
+                    "type": "string"
+                },
+                "on-group-order": {
+                    "type": "string"
+                },
+                "on-hour": {
+                    "type": "string"
+                },
+                "on-off": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "VmSize": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+Now we can check if the current item of the list (that contains the VMs) is part of on-group-order (compared with loop iteraction variable) and then I will check if the tag of the current VM "on-group-order" is like the current timestamp hour.
+e.g.
+In the first iteration the loop variable is equal 1.
+Supposing that the first element in VMs list is testonoff-1 (that represent the database and should start as first VM).
+It's tag on-group-order is equal to 1, this means that loop and on-group-order are equal.
+Th other condition is about on-hour (that we set to T07). Supposing that the current Logic Apps is running at 07:00 a.m. the condition is satisfied and the true part of Logic Apps will be invoked.
+
+To recap:
+
+startOfHour(variables('timestamp')) is the first condition value, compared to on-hour (of parse json item).
+
+The second condition is:
+
+on-group-order is equal to loop variable.
+
+![alt text](img/32.logic-apps.png)
