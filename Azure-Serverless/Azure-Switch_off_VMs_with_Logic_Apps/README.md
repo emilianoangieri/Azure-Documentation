@@ -154,7 +154,7 @@ The authorization is function in order to let Function Apps to proper create it.
 
 Now copy the code available here here:
 
-([RetrieveVMlist.code](https://github.com/emilianoangieri/Azure-Documentation/blob/master/Azure-Switch_off_VMs_with_Logic_Apps/functions_code/RetrieveVMlist/function_code.txt))
+([RetrieveVMlist.code](https://github.com/emilianoangieri/Azure-Documentation/blob/master/Azure-Serverless/Azure-Switch_off_VMs_with_Logic_Apps/functions_code/RetrieveVMlist/function_code.txt))
 
 The function retrieve all the VMs with on-off tag equals to yes and create a JSON output like the following:
 
@@ -223,7 +223,7 @@ Insert the name Start-StopVMs.
 
 Now copy the code available here here:
 
-([Start-StopVMs.code](https://github.com/emilianoangieri/Azure-Documentation/blob/master/Azure-Switch_off_VMs_with_Logic_Apps/functions_code/Start-StopVMs/function_code.txt))
+([Start-StopVMs.code](https://github.com/emilianoangieri/Azure-Documentation/blob/master/Azure-Serverless/Azure-Switch_off_VMs_with_Logic_Apps/functions_code/Start-StopVMs/function_code.txt))
 
 This function receive in input the following parameter and start or stop a VMs depending on the $action parameter:
 
@@ -244,7 +244,7 @@ Insert the name CheckVMStatus.
 
 Now copy the code available here here:
 
-([CheckVMStatus.code](https://github.com/emilianoangieri/Azure-Documentation/blob/master/Azure-Switch_off_VMs_with_Logic_Apps/functions_code/CheckVMStatus/function_code.txt))
+([CheckVMStatus.code](https://github.com/emilianoangieri/Azure-Documentation/blob/master/Azure-Serverless/Azure-Switch_off_VMs_with_Logic_Apps/functions_code/CheckVMStatus/function_code.txt))
 
 Everything is ready to create the flow with Logic Apps!
 
