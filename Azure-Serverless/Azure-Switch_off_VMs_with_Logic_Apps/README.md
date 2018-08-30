@@ -406,10 +406,52 @@ Click on "+ Next Step" and add the Azure Function Start-StopVMs.
 
 As body in input to this function I need to pass the ResourceGroup of the VM (retrievable from the Parse Json previous configured), with VM hostname and action (in this case Start-AzureRmVM).
 
-![alt text](img/33.logic-apps.png)
+![alt text](img/34.logic-apps.png)
 
 Now add a delay of 1 minute before check the VM status.
 
-![alt text](img/34.logic-apps.png)
+![alt text](img/35.logic-apps.png)
 
-Then call the Azure function check 
+Then call the Azure function CheckVMStatus
+
+Passing the ResourceGroup and the Name of the current VM.
+
+![alt text](img/36.logic-apps.png)
+
+Now add another Parse Json to parse the result of the previous Azure Function CheckVMStatus.
+
+![alt text](img/37.logic-apps.png)
+
+Use as schema the following:
+
+```json
+{
+    "properties": {
+        "Name": {
+            "type": "string"
+        },
+        "Status": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+
+```
+![alt text](img/38.logic-apps.png)
+
+Finally check the stauts of the VM. If it is not equal to "VM running" send email through gmail connector (you could use office365 connector as well, as you prefer).
+
+![alt text](img/39.logic-apps.png)
+
+![alt text](img/40.logic-apps.png)
+
+![alt text](img/41.logic-apps.png)
+
+Do not forget to add the increment loop variable at the end of for each previously created.
+
+![alt text](img/42.logic-apps.png)
+
+
+
+
