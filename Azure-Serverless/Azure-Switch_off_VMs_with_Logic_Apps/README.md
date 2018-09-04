@@ -88,18 +88,29 @@ Viceversa in the stop procedure we should first stop the application server and 
 If you wuould like to start the VMs at 09:00 and stop it at 19:00 (Rome time zone) you need to set the tag as the followings: (my timezone up to now differs from UTC about 2 hours).
 
 **tags about testonoff-1**
+
 on-off:yes
+
 on-hour: T07
+
 off-hour: T17 
+
 on-group-order: 1
+
 off-group-order: 2
 
 **tags about testonoff-2**
+
 on-off:yes
+
 on-hour: T07
+
 off-hour: T17 
+
 on-group-order: 2
+
 off-group-order: 1
+
 
 Ok we completed the tag of our resources.
 
